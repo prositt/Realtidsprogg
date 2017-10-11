@@ -10,10 +10,10 @@
 <fullyQualifiedTypeName name="todo.WashingProgram"/>
 <fullyQualifiedTypeName name="todo.WashingProgram0"/>
 <fullyQualifiedTypeName name="se.lth.cs.realtime.event.RTEvent"/>
-<fullyQualifiedTypeName name="todo.TemperatureEvent"/>
 <fullyQualifiedTypeName name="todo.SpinController"/>
 <fullyQualifiedTypeName name="todo.AckEvent"/>
 <fullyQualifiedTypeName name="todo.WaterEvent"/>
 <fullyQualifiedTypeName name="todo.SpinEvent"/>
 <fullyQualifiedTypeName name="done.AbstractWashingMachine"/>
+<fullyQualifiedTypeName name="todo.TemperatureEvent"/>
 </qualifiedTypeNameHistroy>

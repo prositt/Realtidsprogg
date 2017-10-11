@@ -35,7 +35,8 @@ public class WashingProgram2 extends WashingProgram {
 		
 		mailbox.doFetch();											//Wait for temp
 		
-
+myTempController.putEvent(new TemperatureEvent(this,
+				TemperatureEvent.TEMP_IDLE, 40));
 		
 		mySpinController.putEvent(new SpinEvent(this,				//Spin slow
 				SpinEvent.SPIN_SLOW));
@@ -67,6 +68,12 @@ public class WashingProgram2 extends WashingProgram {
 				60.0));
 		
 		mailbox.doFetch();
+		
+		myTempController.putEvent(new TemperatureEvent(this,		
+				TemperatureEvent.TEMP_IDLE,
+				60.0));
+		
+		myTempController.putEvent(new TemperatureEvent(this, TemperatureEvent.TEMP_IDLE, 60));
 		
 		mySpinController.putEvent(new SpinEvent(this,				//Spin slow 
 				SpinEvent.SPIN_SLOW));

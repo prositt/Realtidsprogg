@@ -38,7 +38,7 @@ public class Wash {
 	public static void main(String[] args)
 			throws NumberFormatException, InterruptedException {
 		// Options
-		double theSpeed             = 50.0;
+		double theSpeed             = 500.0;
 		boolean useHackerPanel      = false;
 		double freakShowProbability = 0.00333333;    // Once a minute
 		// Read options
@@ -72,6 +72,7 @@ public class Wash {
 		theMachine.setButtonListener(new WashingController(theMachine, theSpeed));
 		theMachine.start();
 
+		System.out.println("WASHSPEED: "+theSpeed);
 		// Wait for hell to freeze over
 		Object o = new Object();
 		synchronized(o) {

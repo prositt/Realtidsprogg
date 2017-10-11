@@ -3,7 +3,7 @@ package todo;
 import done.AbstractWashingMachine;
 
 public class WashingProgram1 extends WashingProgram {
-	private long speed;
+	private double speed;
 
 	public WashingProgram1(AbstractWashingMachine mach,
 			double speed,
@@ -11,22 +11,21 @@ public class WashingProgram1 extends WashingProgram {
 			WaterController waterController,
 			SpinController spinController) {
 		super(mach, speed, tempController, waterController, spinController);
-		this.mySpeed = (long) speed;
+		this.speed = speed;
 	}
 
 	@Override
 	protected void wash() throws InterruptedException {
-
-		myMachine.setLock(true);								//Lock
+		System.out.println("START: Program 1");
 		
-		System.out.println("Start 1");
+		
+		myMachine.setLock(true);								//Lock
 		
 		myWaterController.putEvent(new WaterEvent(this,			//Fill to 0.5
 				WaterEvent.WATER_FILL,
 				0.5));
 		
 		mailbox.doFetch();									//wait for fill
-		//System.out.println("1/4 - Washingprogram 1: Fill DONE");
 		
 		myWaterController.putEvent(new WaterEvent(this,			//turn off fill
 				WaterEvent.WATER_IDLE,
@@ -36,7 +35,6 @@ public class WashingProgram1 extends WashingProgram {
 				60.0));
 		
 		mailbox.doFetch();										//wait for temp
-		System.out.println("2/4 - Washingprogram 1: Heat DONE");
 		
 		myTempController.putEvent(new TemperatureEvent(this,	//Temp on 60
 				TemperatureEvent.TEMP_IDLE,
@@ -45,11 +43,9 @@ public class WashingProgram1 extends WashingProgram {
 		mySpinController.putEvent(new SpinEvent(this,			//Start spin
 				SpinEvent.SPIN_SLOW));
 		
-		System.out.println("3/4 - Washingprogram 1: START SPIN");
-		
-		System.out.println("WAIT FOR SLEEP");
-		sleep((int) (1000*10 /*speed*/));								//Sleep 30 min
-		System.out.println("SLEEP DONE");
+		System.out.println("Sleep: 1000*60*30/speed "+(speed));
+		sleep((long) (1000*60*30/speed));							//Sleep 30 min
+		System.out.println("Sleep done");
 		
 		myTempController.putEvent(new TemperatureEvent(this,	//Turn temp off
 				TemperatureEvent.TEMP_IDLE, 0.0));
@@ -60,9 +56,7 @@ public class WashingProgram1 extends WashingProgram {
 		myWaterController.putEvent(new WaterEvent(this,			//Drain water
 				WaterEvent.WATER_DRAIN, 0.0));
 		
-		System.out.println("WAIT FOR DRAIN");
 		mailbox.doFetch();
-		System.out.println("4/4 - Washingprogram 1: Water DRAINED");
 		
 		for (int i = 0; i<5; i++){								//Rinse 5 times
 			myWaterController.putEvent(new WaterEvent(this,
@@ -70,7 +64,8 @@ public class WashingProgram1 extends WashingProgram {
 			mailbox.doFetch();
 			mySpinController.putEvent(new SpinEvent(this,
 					SpinEvent.SPIN_SLOW));
-			sleep(1000*10 /*speed*/);
+			sleep((long)(1000*10/speed));
+			System.out.println("Sleep done nr: " +i);
 			mySpinController.putEvent(new SpinEvent(this,
 					SpinEvent.SPIN_OFF));
 			myWaterController.putEvent(new WaterEvent(this,
@@ -79,12 +74,13 @@ public class WashingProgram1 extends WashingProgram {
 		}
 		
 		mySpinController.putEvent(new SpinEvent(this, SpinEvent.SPIN_FAST));	//Centrifuge
-		sleep(1000*5/*speed*/);
+		System.out.println("Centrifuge sleep initialized");
+		sleep((long)(1000*5/speed));
 		mySpinController.putEvent(new SpinEvent(this, SpinEvent.SPIN_OFF));		//Spin off
 		
 		myMachine.setLock(false);								//Unlock
 		
-		System.out.println("Washingprogram 1: FINISHED");
+		System.out.println("FINISHED: Program 1!");
 		this.interrupt();
 		
 	}

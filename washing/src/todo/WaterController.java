@@ -46,7 +46,7 @@ public class WaterController extends PeriodicThread {
 				mach.setFill(false);
 			}
 			if(mach.getWaterLevel()>=level && !sent){
-				System.out.println("WTR EVENT PUT, level: "+ level + " mode: "+ mode);
+				//System.out.println("Message sent (water), level: "+ level);
 				wp.putEvent(new AckEvent(this));
 				sent = true;
 			}
@@ -60,7 +60,7 @@ public class WaterController extends PeriodicThread {
 				mach.setDrain(false);
 			}
 			if(mach.getWaterLevel()==level && !sent){
-				System.out.println("WTR EVENT PUT, level: "+ level + " mode "+ mode);
+				//System.out.println("Message sent (water), level: "+ level);
 				wp.putEvent(new AckEvent(this));
 				sent = true;
 			}

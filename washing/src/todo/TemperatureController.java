@@ -33,17 +33,19 @@ public class TemperatureController extends PeriodicThread {
 		switch(mode){
 		
 		case TemperatureEvent.TEMP_IDLE:
-			if(mach.getTemperature()<=temp-2){
+			if(mach.getTemperature()<=temp-1.5){
 				mach.setHeating(true);
-			}else{	
+			}else if(mach.getTemperature()>temp-0.5){	
 				mach.setHeating(false);
 			}
 			break;
 			
 		case TemperatureEvent.TEMP_SET:	
+			if(mach.getTemperature()<temp){
 			mach.setHeating(true);
-			if(temp>mach.getTemperature() && mach.getTemperature()>=temp-2 && !sent){	
-				System.out.println("TEMP EVENT PUT, temp: " + temp+" mode: "+mode);
+			}
+			if(!sent && (temp>mach.getTemperature() && mach.getTemperature()>=temp-2)){	
+				System.out.println("Message sent (temperature), temp: " + temp);
 				wp.putEvent(new AckEvent(this));
 				sent = true;
 			}

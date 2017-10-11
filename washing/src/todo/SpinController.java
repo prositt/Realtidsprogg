@@ -34,11 +34,13 @@ public class SpinController extends PeriodicThread {
 		case (SpinEvent.SPIN_OFF):
 		mach.setSpin(AbstractWashingMachine.SPIN_OFF);
 		break;
+		
 		case (SpinEvent.SPIN_SLOW):
-			if((System.currentTimeMillis()-lastSwitch) >1000*60/speed)
+			if((System.currentTimeMillis()-lastSwitch) >1000*10/speed){
 				currentDirection = (currentDirection == AbstractWashingMachine.SPIN_RIGHT) ? AbstractWashingMachine.SPIN_LEFT : AbstractWashingMachine.SPIN_RIGHT;
 			mach.setSpin(currentDirection);
 			lastSwitch = System.currentTimeMillis();
+			}
 		break;
 		
 		case (SpinEvent.SPIN_FAST): 
