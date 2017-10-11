@@ -1,0 +1,64 @@
+package todo;
+
+import done.ClockInput;
+import done.ClockOutput;
+import se.lth.cs.realtime.semaphore.MutexSem;
+import se.lth.cs.realtime.semaphore.Semaphore;
+
+public class ButtonThread extends Thread {
+
+	private ClockInput	in;
+	private ClockOutput	out;
+	private Semaphore	sig;
+
+	private Semaphore	signal, mutex;
+
+	SharedData data;
+
+	ButtonThread(ClockInput	input,	SharedData data){
+		in = input;
+		this.data = data;
+		signal = input.getSemaphoreInstance();
+		mutex = data.getMutex();
+	}
+
+	@Override
+	public void run() {
+		int prevChoice = 0;
+		while(true){
+
+
+			signal.take();
+
+			data.alarmStatus(in.getAlarmFlag());
+
+			int choice = in.getChoice();
+			if(choice!=0){
+				prevChoice = choice; 
+			} 
+			// CRITICAL START
+			
+			if(prevChoice == 1 && choice == 0){
+				mutex.take();
+				data.setAlarm(in.getValue());
+				System.out.println("case 1");
+				mutex.give();
+			}
+			if(prevChoice ==2&& choice == 0){
+				mutex.take();
+				data.setClockTime(in.getValue());
+				System.out.println("case 2");
+				mutex.give();
+			}
+			//CRITICAL END
+
+		}
+
+
+	}
+
+}
+
+
+
+

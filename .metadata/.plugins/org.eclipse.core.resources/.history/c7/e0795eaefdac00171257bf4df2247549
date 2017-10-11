@@ -1,0 +1,9 @@
+package todo;
+
+public class WashingProgram0 {
+
+	public WashingProgram0() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

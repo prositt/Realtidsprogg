@@ -1,0 +1,27 @@
+package todo;
+
+import done.ClockInput;
+import done.ClockOutput;
+import se.lth.cs.realtime.semaphore.Semaphore;
+
+public class ButtonThread extends Thread {
+	
+	private ClockInput	in;
+	private ClockOutput	out;
+	private Semaphore	sig;
+	
+	ButtonThread(ClockInput	input, ClockOutput	output, Semaphore	signal){
+		in = input;
+		out = output;
+		sig = signal;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		super.run();
+	}
+
+	
+	
+}

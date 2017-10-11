@@ -1,0 +1,53 @@
+package todo;
+
+import done.ClockInput;
+import done.ClockOutput;
+import se.lth.cs.realtime.semaphore.Semaphore;
+
+public class ButtonThread extends Thread {
+	
+	private ClockInput	in;
+	private ClockOutput	out;
+	private Semaphore	sig;
+	
+	private Semaphore	signal;
+	
+	SharedData data;
+	
+	ButtonThread(ClockInput	input,	SharedData data){
+		in = input;
+		this.data = data;
+		signal = input.getSemaphoreInstance();
+	}
+
+	@Override
+	public void run() {
+		while(true){
+			
+		
+		signal.take();
+		
+		data.alarmStatus(in.getAlarmFlag());
+		System.out.println("hello!");
+		int prevChoice = 0;
+		int choice = in.getChoice();
+		if(choice!=0){
+			prevChoice = choice; 
+		} else {
+			switch(prevChoice){
+				case 1:
+					//data.setAlarm(in.getValue());
+					System.out.println("case 1");
+				case 2:
+					data.setClockTime(in.getValue());
+			}
+		}
+		
+
+		}
+		
+	}
+
+	
+	
+}

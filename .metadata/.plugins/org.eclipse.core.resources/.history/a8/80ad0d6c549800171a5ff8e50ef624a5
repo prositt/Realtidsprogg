@@ -1,0 +1,76 @@
+package todo;
+
+import done.ClockInput;
+import done.ClockOutput;
+import se.lth.cs.realtime.semaphore.Semaphore;
+
+public class TimeThread extends Thread {
+
+	private ClockInput	input;
+	private ClockOutput	output;
+	private Semaphore	signal;
+
+	int clockRef;
+	int hhmmss;
+	private int diff;
+	private int hh;
+	private int mm;
+	private int ss;
+
+	int alarm;
+
+	long loopTime;
+	SharedData data;
+
+
+	TimeThread(SharedData data){
+
+		this.data = data;
+
+		loopTime = System.currentTimeMillis();
+	}
+
+
+	//	int getTime(){
+	//		diff = (int)(System.currentTimeMillis()-clockRef);
+	//		ss=(diff/1000);
+	//		mm=ss%60;
+	//		hh=ss/120;
+	//		return hhmmss = hh*10000+mm*100+ss;
+	//		
+	//	}
+	//	
+	//	int newTime(int hhmmss){
+	//		hh = (hhmmss/10000)*3600;
+	//		mm = ((hhmmss%10000)/100)*60;
+	//		ss = (hhmmss%100);
+	//		this.hhmmss=(hh+mm+ss)*1000;
+	//		clockRef = (int) (System.currentTimeMillis()-this.hhmmss);
+	//		return 0;
+	//	}
+
+
+
+	@Override
+	public void run() {
+
+
+		while(true){
+			loopTime += 10;
+			long delta = loopTime - System.currentTimeMillis();
+			if (delta > 0){	
+				try {
+					sleep(delta);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				data.updateTime();
+			}
+
+		}
+
+
+
+	}
+}

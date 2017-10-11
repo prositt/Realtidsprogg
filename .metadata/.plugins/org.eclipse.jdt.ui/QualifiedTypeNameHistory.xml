@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="se.lth.cs.realtime.semaphore.MutexSem"/>
+<fullyQualifiedTypeName name="done.ClockInput"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="todo.TemperatureController"/>
+<fullyQualifiedTypeName name="todo.WaterController"/>
+<fullyQualifiedTypeName name="todo.WashingController"/>
+<fullyQualifiedTypeName name="todo.WashingProgram"/>
+<fullyQualifiedTypeName name="todo.WashingProgram0"/>
+<fullyQualifiedTypeName name="se.lth.cs.realtime.event.RTEvent"/>
+<fullyQualifiedTypeName name="todo.TemperatureEvent"/>
+<fullyQualifiedTypeName name="todo.SpinController"/>
+<fullyQualifiedTypeName name="todo.AckEvent"/>
+<fullyQualifiedTypeName name="todo.WaterEvent"/>
+<fullyQualifiedTypeName name="todo.SpinEvent"/>
+<fullyQualifiedTypeName name="done.AbstractWashingMachine"/>
+</qualifiedTypeNameHistroy>

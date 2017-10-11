@@ -1,0 +1,67 @@
+package todo;
+
+
+import se.lth.cs.realtime.*;
+import se.lth.cs.realtime.event.RTEvent;
+import done.AbstractWashingMachine;
+
+
+public class WaterController extends PeriodicThread {
+	AbstractWashingMachine mach;
+	int mode;
+	double level;
+	// TODO: add suitable attributes
+
+	public WaterController(AbstractWashingMachine mach, double speed) {
+		super(10);
+		//super((long) (1000/speed)); // TODO: replace with suitable period
+		mode = WaterEvent.WATER_IDLE;
+		level = 0;
+		this.mach = mach;
+		System.out.println("WATERCONTrOLER CREATED");
+	}
+
+	public void perform() {
+		System.out.println("PERFORM");
+		// TODO: implement this method
+		WaterEvent e = (WaterEvent) mailbox.tryFetch();
+		if (e!=null){
+			mode = e.getMode();
+			level = e.getLevel();
+			System.out.println("e was not null!");
+		}
+		System.out.println("e is null :(");
+
+		switch(mode){
+		case WaterEvent.WATER_IDLE:
+			mach.setDrain(false);
+			mach.setFill(false);
+			break;
+			
+		case WaterEvent.WATER_FILL:
+			mach.setDrain(false);
+			if(mach.getWaterLevel()<level){
+				mach.setFill(true);
+				System.out.println("WATE CTRL: Filling!");
+			} else {
+				mach.setFill(false);
+			}
+			if(mach.getWaterLevel()>=level){	
+				((RTThread)e.getSource()).putEvent(new AckEvent(this));
+			}
+			break;
+			
+		case WaterEvent.WATER_DRAIN: 
+			mach.setFill(false);
+			if(mach.getWaterLevel() > level){
+				mach.setDrain(true);
+			} else {
+				mach.setDrain(false);
+			}
+			if(mach.getWaterLevel()<level){	
+				((RTThread)e.getSource()).putEvent(new AckEvent(this));
+			}
+		break;
+		}
+	}
+}

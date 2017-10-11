@@ -1,0 +1,67 @@
+package todo;
+
+import done.AbstractWashingMachine;
+
+public class WashingProgram1 extends WashingProgram {
+
+	public WashingProgram1(AbstractWashingMachine mach,
+			double speed,
+			TemperatureController tempController,
+			WaterController waterController,
+			SpinController spinController) {
+		super(mach, speed, tempController, waterController, spinController);
+	}
+
+	@Override
+	protected void wash() throws InterruptedException {
+
+		myMachine.setLock(true);
+		
+		myWaterController.putEvent(new WaterEvent(this,
+				WaterEvent.WATER_FILL,
+				0.5));
+		
+		mailbox.doFetch();
+		
+		myWaterController.putEvent(new WaterEvent(this,
+				WaterEvent.WATER_IDLE,
+				0.5));
+		myTempController.putEvent(new TemperatureEvent(this,
+				TemperatureEvent.TEMP_SET,
+				60.0));
+		mailbox.doFetch();
+		
+		mySpinController.putEvent(new SpinEvent(this,
+				SpinEvent.SPIN_SLOW));
+		
+		sleep(1000*60*3000);
+		
+		myTempController.putEvent(new TemperatureEvent(this,
+				TemperatureEvent.TEMP_IDLE, 0.0));
+		
+		mySpinController.putEvent(new SpinEvent(this,
+				SpinEvent.SPIN_OFF));
+		
+		myWaterController.putEvent(new WaterEvent(this,
+				WaterEvent.WATER_DRAIN, 0.0));
+		
+		for (int i = 0; i<5; i++){
+			myWaterController.putEvent(new WaterEvent(this,
+					WaterEvent.WATER_FILL, 0.5));
+			mailbox.doFetch();
+			sleep(1000*60*2);
+			myWaterController.putEvent(new WaterEvent(this,
+					WaterEvent.WATER_DRAIN, 0.0));
+			mailbox.doFetch();
+		}
+		
+		mySpinController.putEvent(new SpinEvent(this, SpinEvent.SPIN_FAST));
+		sleep(1000*60*5);
+		mySpinController.putEvent(new SpinEvent(this, SpinEvent.SPIN_OFF));
+		
+		myMachine.setLock(false);
+		this.interrupt();
+		
+	}
+
+}

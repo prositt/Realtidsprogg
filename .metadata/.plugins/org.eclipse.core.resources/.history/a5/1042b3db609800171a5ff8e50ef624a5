@@ -1,0 +1,89 @@
+package todo;
+
+import done.ClockInput;
+import done.ClockOutput;
+import se.lth.cs.realtime.semaphore.Semaphore;
+
+import se.lth.cs.realtime.semaphore.MutexSem;
+
+public class SharedData {
+	
+	private int clockTime;
+	
+	int choise;
+	int preChoise;
+	
+	private ClockInput	input;
+	private ClockOutput	output;
+	private Semaphore	signal;
+	
+	
+	private int alarmTime;
+	private int counter;
+	private boolean alarmFlag = false;
+	
+
+	
+	SharedData(ClockInput in, ClockOutput out, Semaphore	sig){
+		input = in;
+		output= out;
+		signal= sig;
+		clockTime=0;
+
+	}
+	
+	public void updateTime(){
+		
+		clockTime++;
+		
+		int h =clockTime /10000;
+		int restminutes = clockTime%10000;
+		int m = restminutes/100;
+		int s = restminutes%100;
+	
+		if (s>59){
+			s=0;
+			m++;
+		}
+		if (m>59){
+			m=0;
+			h++;
+		}
+		if(h>23){
+			h=0;
+		}
+		
+		clockTime= h*10000+m*100+s;
+		output.showTime(clockTime);
+		
+		if(alarmFlag && clockTime==alarmTime){
+			counter = 20;
+		}
+		
+		if(counter > 0){
+			output.doAlarm();
+			counter--;
+		}
+		
+		
+		
+	}
+	
+	public void alarmStatus(boolean alarm){
+		alarmFlag = alarm;
+		
+	}
+	
+	public void setClockTime(int hhmmss){
+		clockTime = hhmmss;
+	}
+	
+	public void setAlarm(int hhmmss){
+		alarmTime = hhmmss;
+	}
+	
+	
+
+
+	
+}
